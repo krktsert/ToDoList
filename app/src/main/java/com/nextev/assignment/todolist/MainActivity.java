@@ -73,30 +73,54 @@ public class MainActivity extends AppCompatActivity {
         int menuItemIndex = item.getItemId();
         String[] menuItems = getResources().getStringArray(R.array.menu);
         String menuItemName = menuItems[menuItemIndex];
-        String listItemName = todoList.get(info.position);
+        final String listItemName = todoList.get(info.position);
 
         switch (item.getItemId()){
             case 0: //EDIT
+                final EditText taskEditText = new EditText(this);
+                taskEditText.setText(listItemName);
+                taskEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(30)});
+                AlertDialog dialogEdit = new AlertDialog.Builder(this)
+                        .setTitle("Edit task")
+                        .setMessage("What do you want to do next?")
+                        .setView(taskEditText)
+                        .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String task = String.valueOf(taskEditText.getText());
+                                SQLiteDatabase db = todoListDbConnector.getWritableDatabase();
+                                ContentValues values = new ContentValues();
+                                values.put(DBConnectorHelper.TaskEntry.COL_TASK_TITLE, task);
+                                db.execSQL("UPDATE " + DBConnectorHelper.TaskEntry.TABLE +
+                                        " SET " + DBConnectorHelper.TaskEntry.COL_TASK_TITLE + "='"+task+"' "
+                                        +"WHERE " + DBConnectorHelper.TaskEntry.COL_TASK_TITLE + "='" + listItemName +"'");
+
+                                updateView();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .create();
+                dialogEdit.show();
                 break;
             case 1: //DELETE
                 deleteTask(listItemName);
                 break;
             case 2: //SHARE
-                final EditText taskEditText = new EditText(this);
-                taskEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(30)});
-                AlertDialog dialog = new AlertDialog.Builder(this)
+                final EditText taskShareText = new EditText(this);
+                taskShareText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(30)});
+                AlertDialog dialogShare = new AlertDialog.Builder(this)
                         .setTitle("Share the task")
                         .setMessage("Whom you want to send ?")
-                        .setView(taskEditText)
+                        .setView(taskShareText)
                         .setPositiveButton("Share", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                shareTask(String.valueOf(taskEditText.getText()));
+                                shareTask(String.valueOf(taskShareText.getText()));
                             }
                         })
                         .setNegativeButton("Cancel", null)
                         .create();
-                dialog.show();
+                dialogShare.show();
                 //shareTask();
                 break;
         }
