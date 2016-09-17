@@ -6,4 +6,14 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/add_task"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_share_task"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="Share"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_open_list"
+        android:icon="@android:drawable/ic_menu_upload"
+        android:title="open"
+        app:showAsAction="always"/>
 </menu>

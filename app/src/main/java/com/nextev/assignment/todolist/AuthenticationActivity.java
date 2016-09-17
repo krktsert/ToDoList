@@ -1,19 +1,17 @@
 package com.nextev.assignment.todolist;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -26,7 +24,8 @@ import java.util.List;
  */
 public class AuthenticationActivity extends FragmentActivity {
 
-    public LoginButton loginButton;
+    LoginButton loginButton;
+    Button skipButton;
     CallbackManager callbackManager;
 
     @Override
@@ -40,20 +39,7 @@ public class AuthenticationActivity extends FragmentActivity {
         loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
 
         callbackManager = CallbackManager.Factory.create();
-/*
-        if(loginButton.getText().equals("Log out")){
-            Intent i = getIntent();
-            overridePendingTransition(0, 0);
-            i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            finish();
 
-            overridePendingTransition(0, 0);
-            startActivity(i);
-
-            Intent i2 = new Intent(AuthenticationActivity.this , MainActivity.class);
-            startActivity(i2);
-        }
-*/
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -85,11 +71,29 @@ public class AuthenticationActivity extends FragmentActivity {
             }
         });
 
-    }
+        skipButton = (Button) findViewById(R.id.button_skip);
+        if(loginButton.getText().equals("Log out")) {
+            skipButton.setVisibility(View.VISIBLE);
+        }else{
+            skipButton.setVisibility(View.GONE);
+        }
 
-    @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        return super.onCreateView(parent, name, context, attrs);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = getIntent();
+                overridePendingTransition(0, 0);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                finish();
+
+                overridePendingTransition(0, 0);
+                startActivity(i);
+
+                Intent i2 = new Intent(AuthenticationActivity.this , MainActivity.class);
+                startActivity(i2);
+            }
+        });
+
     }
 
     @Override

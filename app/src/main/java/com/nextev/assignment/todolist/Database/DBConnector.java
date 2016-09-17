@@ -29,4 +29,9 @@ public class DBConnector extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DBConnectorHelper.TaskEntry.TABLE);
         onCreate(sqLiteDatabase);
     }
+
+    @Override
+    public SQLiteDatabase getReadableDatabase() {
+        return super.getReadableDatabase();
+    }
 }

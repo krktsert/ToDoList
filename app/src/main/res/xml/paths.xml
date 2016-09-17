@@ -1,0 +1,6 @@
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <files-path name="my_db" path="../databases/"/>
+    <files-path name="my_files" path=""/>
+    <!---/data/data/com.nextev.assignment.todolist/databases/com.nextev.assignment.todolist.db -->
+
+</paths>

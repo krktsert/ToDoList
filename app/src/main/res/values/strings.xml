@@ -4,7 +4,6 @@
     <string-array name="menu">
         <item>Edit</item>
         <item>Delete</item>
-        <item>Share</item>
     </string-array>
     <string name="facebook_app_id">190732818004932</string>
 </resources>
